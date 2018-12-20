@@ -1,4 +1,4 @@
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, List
 
 from wagtail import VERSION
 
@@ -10,9 +10,9 @@ else:
 
 def build_page_tree(
     # Would that mypy supported recursive types
-    tree=Iterable[Tuple[Page, Iterable]],
-    root=None
-):
+    tree: Iterable[Tuple[Page, Iterable]],
+    root: Page = None
+) -> List[Page]:
     """
     Construct a page tree in the database. Accepts a tree in the form:
 
@@ -50,7 +50,7 @@ def build_page_tree(
     return created
 
 
-def get_site():
+def get_site() -> Site:
     try:
         return Site.objects.get()
     except Site.MultipleObjectsReturned:
@@ -61,7 +61,7 @@ def get_site():
         )
 
 
-def get_root_page():
+def get_root_page() -> Page:
     try:
         return Page.objects.get(depth=1)
     except Page.MultipleObjectsReturned:

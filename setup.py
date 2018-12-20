@@ -3,7 +3,7 @@ from os import path
 from foliage import __version__
 
 here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst')) as f:
+with open(path.join(here, 'README.md')) as f:
     long_description = f.read()
 
 
@@ -26,6 +26,7 @@ setup(
     license='BSD-3-Clause',
 
     install_requires=[
+        'typing>=3.6.6',
         'wagtail>=1.11',
     ],
 
