@@ -1,6 +1,18 @@
 # Wagtail Foliage
 
-Utilities for programmatically building page trees in Wagtail.
+Utilities for programmatically building page trees in Wagtail for automated
+tests, default site structures, and more.
+
+## Requirements
+
+Wagtail Foliage supports:
+
+* Python 3.4, 3.5, 3.6, and 3.7
+* Django 1.11, 2.0, and 2.1
+* Wagtail 1.13, 2.3, and 2.4
+
+These are the currently supported versions for each project as of December
+2018, excepting the exclusion of Python 2.7 from this list.
 
 ## Usage
 
