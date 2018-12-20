@@ -2,14 +2,14 @@ from django.test import TestCase
 
 from wagtail import VERSION
 
-if VERSION < (2, 0):
-    from wagtail.wagtailcore.models import Page
-else:
-    from wagtail.core.models import Page
-
-from foliage.utils import build_page_tree
+from foliage.utils import build_page_tree, get_site, get_root_page
 
 from .testapp.models import HomePage, InsidePage
+
+if VERSION < (2, 0):
+    from wagtail.wagtailcore.models import Page, Site
+else:
+    from wagtail.core.models import Page, Site
 
 
 class BuildPageTreeTestCase(TestCase):
@@ -71,4 +71,57 @@ class BuildPageTreeTestCase(TestCase):
         self.assertEqual(
             data[0]['children'][1]['children'][0]['data']['title'],
             "Inside Page 2, 1"
+        )
+
+
+class GetSiteTestCase(TestCase):
+    def test_get_site__success(self):
+        "`get_site` should return a Site object under normal circumstances"
+        self.assertTrue(isinstance(get_site(), Site))
+
+    def test_get_site__more_than_one(self):
+        """
+        If there are multiple sites in the database, `get_site` should raise
+        a MultipleObjectsReturned exeption
+        """
+        # Create a second site with a new root page
+        root_page = Page.add_root(instance=Page(title="Second Sight"))
+        Site.objects.create(
+            hostname='secondsight.com',
+            port=80,
+            root_page=root_page
+        )
+
+        with self.assertRaises(Site.MultipleObjectsReturned) as cm:
+            get_site()
+
+        self.assertEqual(
+            cm.exception.args,
+            ("Foliage can't auto-determine the Wagtail Site. "
+             "More than one Site exists in the database!",)
+        )
+
+
+class GetRootPageTestCase(TestCase):
+    def test_get_root_page__success(self):
+        """
+        `get_root_page` should return a Page object under normal circumstances
+        """
+        self.assertTrue(isinstance(get_root_page(), Page))
+
+    def test_get_root_page__more_than_one(self):
+        """
+        If there are multiple root pages in the database, `get_root_page`
+        should raise a MultipleObjectsReturned exception
+        """
+        # Create a new root page
+        Page.add_root(instance=Page(title="Route 2"))
+
+        with self.assertRaises(Site.MultipleObjectsReturned) as cm:
+            get_root_page()
+
+        self.assertEqual(
+            cm.exception.args,
+            ('Foliage can\'t auto-determine the root page. '
+             'More than one Page exists with depth 1 in the database!',)
         )

@@ -3,9 +3,9 @@ from typing import Iterable, Tuple
 from wagtail import VERSION
 
 if VERSION < (2, 0):
-    from wagtail.wagtailcore.models import Page
+    from wagtail.wagtailcore.models import Page, Site
 else:
-    from wagtail.core.models import Page
+    from wagtail.core.models import Page, Site
 
 
 def build_page_tree(
@@ -48,3 +48,25 @@ def build_page_tree(
         created += build_page_tree(children, root=page)
 
     return created
+
+
+def get_site():
+    try:
+        return Site.objects.get()
+    except Site.MultipleObjectsReturned:
+        # Reraise MultipleObjectsReturned, but with our own message
+        raise Site.MultipleObjectsReturned(
+            'Foliage can\'t auto-determine the Wagtail Site. '
+            'More than one Site exists in the database!'
+        )
+
+
+def get_root_page():
+    try:
+        return Page.objects.get(depth=1)
+    except Page.MultipleObjectsReturned:
+        # Reraise MultipleObjectsReturned, but with our own message
+        raise Site.MultipleObjectsReturned(
+            'Foliage can\'t auto-determine the root page. '
+            'More than one Page exists with depth 1 in the database!'
+        )
