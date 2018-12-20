@@ -16,7 +16,9 @@ setup(
 
     description='Utilities for programatically constructing page trees in '
                 'Wagtail',
+
     long_description=long_description,
+    long_description_content_type='text/markdown',
 
     url='https://github.com/harrislapiroff/wagtail-foliage',
 

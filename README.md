@@ -18,7 +18,7 @@ These are the currently supported versions for each project as of December
 
 ## Installation
 
-```shell
+```bash
 pip install wagtail-foliage
 ```
 
