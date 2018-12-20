@@ -16,6 +16,12 @@ Wagtail Foliage supports:
 These are the currently supported versions for each project as of December
 2018, excepting the exclusion of Python 2.7 from this list.
 
+## Installation
+
+```shell
+pip install wagtail-foliage
+```
+
 ## Usage
 
 ### Use as a context manager
