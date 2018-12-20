@@ -1,5 +1,7 @@
 # Wagtail Foliage
 
+[![CircleCI](https://circleci.com/gh/harrislapiroff/wagtail-foliage.svg?style=svg)](https://circleci.com/gh/harrislapiroff/wagtail-foliage)
+
 Utilities for programmatically building page trees in Wagtail for automated
 tests, default site structures, and more.
 
