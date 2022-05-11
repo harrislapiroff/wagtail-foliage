@@ -1,10 +1,11 @@
+import django
 from django.db import transaction
 
 from foliage.utils import build_page_tree, get_site, get_root_page
 
 
 class page_tree(transaction.Atomic):
-    def __init__(self, tree, site=None, using=None, savepoint=True):
+    def __init__(self, tree, site=None, using=None, savepoint=True, durable=False):
         if len(tree) > 1:
             raise ValueError("page_tree expects a tree with a single "
                              "root page. Found {}".format(len(tree)))
@@ -12,7 +13,11 @@ class page_tree(transaction.Atomic):
         self.tree = tree
         self.site = site if site is not None else get_site()
         self.root_page = get_root_page()
-        super().__init__(using, savepoint)
+
+        if django.VERSION < (3,):
+            super().__init__(using, savepoint)
+        else:
+            super().__init__(using, savepoint, durable)
 
     def __enter__(self):
         super().__enter__()  # Start the transaction *first*
